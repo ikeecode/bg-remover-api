@@ -28,7 +28,7 @@ def remove_bg(request):
         size = img.size
         mask = Image.new('L', size, 0)
         draw = ImageDraw.Draw(mask)
-        draw.rounded_rectangle([(0, 0), size], radius=500, fill=255)
+        draw.rounded_rectangle([(0, 0), size], radius=100, fill=255)
         
         # Apply the mask to the original image
         output = Image.new('RGBA', size, (0, 0, 0, 0))
