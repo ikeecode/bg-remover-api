@@ -2,11 +2,9 @@ from rest_framework.decorators import permission_classes, api_view, parser_class
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import MultiPartParser
 from rest_framework import status
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 from django.http import HttpResponse
 import io
-
-
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser])
@@ -19,8 +17,9 @@ def remove_bg(request):
         return HttpResponse({"error": "Image file must be provided."}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        # Open the uploaded image file
+        # Open the uploaded image file and apply EXIF orientation
         img = Image.open(image)
+        img = ImageOps.exif_transpose(img)
         
         # Convert to RGBA if it isn't already
         img = img.convert("RGBA")
